@@ -8,14 +8,25 @@ namespace AssignmentManagementApp.Tests
     public class AssignmentTests
     {
         [Fact]
-        public void Assignment_Should_Have_a_Title()
+        public void Constructor_ValidInput_ShouldCreateAssignment()
         {
-            var assignment = new Assignment
-            {
-                // Title of the assignment
-                Title = "Default Title" // Required by annotation
-            };
-            Assert.NotNull(assignment.Title);
+            var assignment = new Assignment("Read Chapter 2", "Summarize key points");
+            Assert.Equal("Read Chapter 2", assignment.Title);
+            Assert.Equal("Summarize key points", assignment.Description);
+        }
+
+        [Fact]
+        public void Constructor_BlankTitle_ShouldThrowException()
+        {
+            Assert.Throws<ArgumentException>(() => new Assignment("", "Valid description"));
+        }
+
+        [Fact]
+        public void Update_BlankDescription_ShouldThrowException()
+        {
+            var assignment = new Assignment("Read Chapter 2", "Summarize key points");
+            Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", ""));
         }
     }
+
 }

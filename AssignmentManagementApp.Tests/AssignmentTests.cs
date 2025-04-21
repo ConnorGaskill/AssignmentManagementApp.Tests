@@ -27,6 +27,12 @@ namespace AssignmentManagementApp.Tests
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
             Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", ""));
         }
+        [Fact]
+        public void Update_BlankTitle_ShouldThrowException()
+        {
+            var assignment = new Assignment("Read Chapter 2", "Summarize key points");
+            Assert.Throws<ArgumentException>(() => assignment.Update("", "Valid description"));
+        }
     }
 
 }

@@ -1,7 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace AssignmentManagementApp.Tests
 {

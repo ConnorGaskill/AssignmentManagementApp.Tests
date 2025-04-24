@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AssignmentManagementApp.Tests
+﻿namespace AssignmentManagement.Core
 {
     public class Assignment
     {
         public string Title { get; private set; }
         public string Description { get; private set; }
+        public bool IsCompleted { get; private set; }
 
         public Assignment(string title, string description)
         {
@@ -19,6 +13,7 @@ namespace AssignmentManagementApp.Tests
 
             Title = title;
             Description = description;
+            IsCompleted = false;
         }
 
         public void Update(string newTitle, string newDescription)
@@ -28,6 +23,11 @@ namespace AssignmentManagementApp.Tests
 
             Title = newTitle;
             Description = newDescription;
+        }
+
+        public void MarkComplete()
+        {
+            IsCompleted = true;
         }
 
         private void Validate(string input, string fieldName)

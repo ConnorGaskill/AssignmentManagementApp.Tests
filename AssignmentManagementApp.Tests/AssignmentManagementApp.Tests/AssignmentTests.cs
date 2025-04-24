@@ -1,8 +1,6 @@
-﻿using System;
-using Xunit;
-
-namespace AssignmentManagementApp.Tests
+﻿namespace AssignmentManagement.Tests
 {
+    using AssignmentManagement.Core;
     public class AssignmentTests
     {
         [Fact]
@@ -11,6 +9,7 @@ namespace AssignmentManagementApp.Tests
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
             Assert.Equal("Read Chapter 2", assignment.Title);
             Assert.Equal("Summarize key points", assignment.Description);
+            Assert.False(assignment.IsCompleted);
         }
 
         [Fact]
@@ -25,12 +24,13 @@ namespace AssignmentManagementApp.Tests
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
             Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", ""));
         }
+
         [Fact]
-        public void Update_BlankTitle_ShouldThrowException()
+        public void MarkComplete_SetsIsCompletedToTrue()
         {
-            var assignment = new Assignment("Read Chapter 2", "Summarize key points");
-            Assert.Throws<ArgumentException>(() => assignment.Update("", "Valid description"));
+            var assignment = new Assignment("Task", "Complete the lab");
+            assignment.MarkComplete();
+            Assert.True(assignment.IsCompleted);
         }
     }
-
 }

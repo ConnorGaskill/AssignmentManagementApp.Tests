@@ -17,7 +17,18 @@
         public List<Assignment> ListIncomplete()
         {
             // TODO: Return only assignments where IsCompleted is false
-            throw new NotImplementedException();
+
+            List<Assignment> incomplete = new();
+
+             assignments.ForEach(a =>
+            {
+                if (!a.IsCompleted)
+                {
+                    incomplete.Add(a);
+                }
+            });
+
+            return incomplete;
         }
     }
 }

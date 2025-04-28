@@ -25,5 +25,13 @@
             Assert.Single(result);
             Assert.Equal("Incomplete Task", result[0].Title);
         }
+        [Fact]
+        public void ListIncomplete_EmptyListShouldThrowException()
+        {
+            var service = new AssignmentService();
+
+            // Calling ListIncomplete without any assignments
+            Assert.Throws<ArgumentException>(() => service.ListIncomplete());
+        }
     }
 }

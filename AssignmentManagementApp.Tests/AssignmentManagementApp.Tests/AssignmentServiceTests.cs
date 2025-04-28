@@ -33,5 +33,23 @@
             // Calling ListIncomplete without any assignments
             Assert.Throws<ArgumentException>(() => service.ListIncomplete());
         }
+        [Fact]
+        public void ListIncomplete_ShouldReturnAllAssignmentsThatAreNotCompleted()
+        {
+            var service = new AssignmentService();
+            var a1 = new Assignment("Incomplete Task", "Do something");
+            var a2 = new Assignment("Completed Task", "Do something else");
+            var a3 = new Assignment("Incomplete Task", "Do something cool");
+            a2.MarkComplete();
+
+            service.AddAssignment(a1);
+            service.AddAssignment(a2);
+            service.AddAssignment(a3);
+
+            var result = service.ListIncomplete();
+
+            Assert.Equal(2, result.Count);
+            Assert.True(result.All(a => !a.IsCompleted));
+        }
     }
 }

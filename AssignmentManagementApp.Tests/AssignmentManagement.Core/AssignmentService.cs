@@ -20,6 +20,10 @@
 
             List<Assignment> incomplete = new();
 
+            if (assignments.Count == 0 || assignments == null) {
+                throw new ArgumentException("No assignments");
+            }
+
              assignments.ForEach(a =>
             {
                 if (!a.IsCompleted)

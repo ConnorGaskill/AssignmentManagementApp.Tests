@@ -1,4 +1,4 @@
-﻿namespace AssignmentManagement.Tests
+﻿namespace AssignmentManagementApp.Tests
 {
     using Xunit;
     using AssignmentManagement.Core;

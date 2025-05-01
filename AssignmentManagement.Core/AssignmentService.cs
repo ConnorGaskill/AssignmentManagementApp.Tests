@@ -26,10 +26,11 @@ namespace AssignmentManagement.Core
 
         public List<Assignment> ListIncomplete()
         {
+            List<Assignment> incomplete = new();
+
             if (_assignments.Count == 0 || _assignments == null)
-            {
                 throw new ArgumentException("No assignments");
-            }
+
             return _assignments.Where(a => !a.IsCompleted).ToList();
         }
 

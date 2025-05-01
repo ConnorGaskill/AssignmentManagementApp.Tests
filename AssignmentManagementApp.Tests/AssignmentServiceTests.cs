@@ -39,7 +39,7 @@
             var service = new AssignmentService();
             var a1 = new Assignment("Incomplete Task", "Do something");
             var a2 = new Assignment("Completed Task", "Do something else");
-            var a3 = new Assignment("Incomplete Task", "Do something cool");
+            var a3 = new Assignment("Unfinished Task", "Do something cool");
             a2.MarkComplete();
 
             service.AddAssignment(a1);

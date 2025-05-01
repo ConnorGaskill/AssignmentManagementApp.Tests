@@ -119,22 +119,65 @@ namespace AssignmentManagement.UI
 
         private void MarkAssignmentComplete()
         {
-            // TODO: Implement UI for marking assignment complete
+            Console.Write("Enter the title of the assignment to mark complete: ");
+            var title = Console.ReadLine();
+            if (_assignmentService.MarkAssignmentComplete(title))
+            {
+                Console.WriteLine("Assignment marked as complete.");
+            }
+            else
+            {
+                Console.WriteLine("Assignment not found.");
+            }
         }
 
         private void SearchAssignmentByTitle()
         {
-            // TODO: Implement UI for searching assignment by title
+            Console.Write("Enter the title to search: ");
+            var title = Console.ReadLine();
+            var assignment = _assignmentService.FindAssignmentByTitle(title);
+
+            if (assignment == null)
+            {
+                Console.WriteLine("Assignment not found.");
+            }
+            else
+            {
+                Console.WriteLine($"Found: {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
+            }
         }
 
         private void UpdateAssignment()
         {
-            // TODO: Implement UI for updating assignment
+            Console.Write("Enter the current title of the assignment: ");
+            var oldTitle = Console.ReadLine();
+            Console.Write("Enter the new title: ");
+            var newTitle = Console.ReadLine();
+            Console.Write("Enter the new description: ");
+            var newDescription = Console.ReadLine();
+
+            if (_assignmentService.UpdateAssignment(oldTitle, newTitle, newDescription))
+            {
+                Console.WriteLine("Assignment updated successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Update failed. Title may conflict or assignment not found.");
+            }
         }
 
         private void DeleteAssignment()
         {
-            // TODO: Implement UI for deleting assignment
+            Console.Write("Enter the title of the assignment to delete: ");
+            var title = Console.ReadLine();
+            if (_assignmentService.DeleteAssignment(title))
+            {
+                Console.WriteLine("Assignment deleted successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Assignment not found.");
+            }
         }
     }
 }

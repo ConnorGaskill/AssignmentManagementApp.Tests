@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AssignmentManagement.Core
 {
-    public class AssignmentService
+    public class AssignmentService : IAssignmentService
     {
         private readonly List<Assignment> _assignments = new();
 

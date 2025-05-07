@@ -6,9 +6,9 @@ namespace AssignmentManagement.UI
 {
     public class ConsoleUI
     {
-        private readonly AssignmentService _assignmentService;
+        private readonly IAssignmentService _assignmentService;
 
-        public ConsoleUI(AssignmentService assignmentService)
+        public ConsoleUI(IAssignmentService assignmentService)
         {
             _assignmentService = assignmentService;
         }
@@ -113,7 +113,7 @@ namespace AssignmentManagement.UI
 
             foreach (var assignment in assignments)
             {
-                Console.WriteLine($"- {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
+                Console.WriteLine($"- {assignment.Title}: {assignment.Description} (Incomplete: {assignment.IsCompleted})");
             }
         }
 

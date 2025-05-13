@@ -7,13 +7,13 @@ using System;
 
 namespace AssignmentManagement.Console
 {
-    internal class Program
+    public class Program
     {
-        public static void Main(string[] args) // 🔥 Static Main method — this is required
+        private static void Main(string[] args) // 🔥 Static Main method — this is required
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<AssignmentService>();
+            services.AddSingleton<IAssignmentService, AssignmentService>();
             services.AddSingleton<ConsoleUI>();
 
             var serviceProvider = services.BuildServiceProvider();
@@ -23,3 +23,4 @@ namespace AssignmentManagement.Console
         }
     }
 }
+public partial class Program { };

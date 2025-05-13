@@ -1,4 +1,6 @@
-﻿namespace AssignmentManagement.Core
+﻿using System.Text.Json.Serialization;
+
+namespace AssignmentManagement.Core
 {
     public class Assignment
     {

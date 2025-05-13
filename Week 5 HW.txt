@@ -1,0 +1,17 @@
+I have experience working on console-based programs, but not so much web APIs.
+
+With consoles, creating tests with XUnit are fairly straight forward – find a method, test it,
+maybe you need to mock something, but it’s usually not that complicated.
+
+With APIs, integration testing was very difficult for me. I found myself needing to look at the
+assignment class, controller, service, and API tests while working through my integration
+tests. In general, I was looking at multiple files to track down bugs where the console app was far simpler.
+
+Getting used to how JSON serialization works took me a while as well, and I couldn’t get
+deserialization to work at all -- maybe we could go over that in the future?
+
+I also fixed the issue I was having! Since I had 2 Program.cs in multiple projects,
+WebApplicationFactory couldn’t disambiguate which one I was referring to. Once I made it
+explicit, everything was fine.
+
+Thanks again for the extension and the help. You and Colton really saved my bacon here!

@@ -21,7 +21,7 @@ namespace AssignmentManagement.Core
 
         public List<Assignment> ListAll()
         {
-            return new List<Assignment>(_assignments);
+            return _assignments;
         }
 
         public List<Assignment> ListIncomplete()
@@ -35,7 +35,7 @@ namespace AssignmentManagement.Core
         }
 
         // TODO: Implement method to find an assignment by title
-        public Assignment FindAssignmentByTitle(string title)
+        public Assignment? FindAssignmentByTitle(string title)
         {
             return _assignments.FirstOrDefault(a => a.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         }

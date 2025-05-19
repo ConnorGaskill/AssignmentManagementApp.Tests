@@ -2,8 +2,9 @@
 
 using Xunit;
 using AssignmentManagement.UI;
-using AssignmentManagement.Core;
 using Moq;
+using AssignmentManagement.Core.Interfaces;
+using AssignmentManagement.Core.Models;
 
 public class ConsoleUITests
 {

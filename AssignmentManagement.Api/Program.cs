@@ -1,4 +1,5 @@
-using AssignmentManagement.Core;
+using AssignmentManagement.Core.Interfaces;
+using AssignmentManagement.Core.Services;
 
 namespace AssignmentManagement.API;
 public class Program
@@ -14,6 +15,8 @@ public class Program
         builder.Services.AddOpenApi();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddSingleton<IAppLogger, ConsoleAppLogger>();
+        builder.Services.AddSingleton<IAssignmentFormatter, AssignmentFormatter>();
         builder.Services.AddSingleton<IAssignmentService, AssignmentService>();
 
 

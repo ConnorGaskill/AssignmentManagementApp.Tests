@@ -2,6 +2,10 @@
 {
     using Xunit;
     using AssignmentManagement.Core;
+    using AssignmentManagement.Core.Services;
+    using AssignmentManagement.Core.Models;
+    using Moq;
+    using AssignmentManagement.Core.Interfaces;
 
     public class AssignmentServiceTests
     {
@@ -9,7 +13,10 @@
         public void ListIncomplete_ShouldReturnOnlyAssignmentsThatAreNotCompleted()
         {
             // Arrange
-            var service = new AssignmentService();
+            var mockLogger = new Mock<ConsoleAppLogger>();
+            var mockFormatter = new Mock<AssignmentFormatter>();
+            var service = new AssignmentService(mockLogger.Object, mockFormatter.Object);
+
             var a1 = new Assignment("Incomplete Task", "Do something");
             var a2 = new Assignment("Completed Task", "Do something else");
             a2.MarkComplete();
@@ -28,7 +35,9 @@
         [Fact]
         public void ListIncomplete_EmptyListShouldThrowException()
         {
-            var service = new AssignmentService();
+            var mockLogger = new Mock<ConsoleAppLogger>();
+            var mockFormatter = new Mock<AssignmentFormatter>();
+            var service = new AssignmentService(mockLogger.Object, mockFormatter.Object);
 
             // Calling ListIncomplete without any assignments
             Assert.Throws<ArgumentException>(() => service.ListIncomplete());
@@ -36,7 +45,10 @@
         [Fact]
         public void ListIncomplete_ShouldReturnAllAssignmentsThatAreNotCompleted()
         {
-            var service = new AssignmentService();
+            var mockLogger = new Mock<ConsoleAppLogger>();
+            var mockFormatter = new Mock<AssignmentFormatter>();
+            var service = new AssignmentService(mockLogger.Object, mockFormatter.Object);
+
             var a1 = new Assignment("Incomplete Task", "Do something");
             var a2 = new Assignment("Completed Task", "Do something else");
             var a3 = new Assignment("Unfinished Task", "Do something cool");
@@ -51,5 +63,57 @@
             Assert.Equal(2, result.Count);
             Assert.True(result.All(a => !a.IsCompleted));
         }
+        [Fact]
+        public void Logger_ShouldBeCalledWhenAddingAssignment()
+        {
+            
+            var formatter = new Mock<IAssignmentFormatter>();
+            var logger = new Mock<IAppLogger>();
+            var service = new AssignmentService(logger.Object, formatter.Object);
+            var assignment = new Assignment("test", "more test");
+
+            
+            service.AddAssignment(assignment);
+
+            
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Adding assignment"))), Times.Once);
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Assignment added"))), Times.Once);
+        }
+
+        [Fact]
+        public void Logger_ShouldBeCalledWhenDeletingAssignment()
+        {
+
+            var formatter = new Mock<IAssignmentFormatter>();
+            var logger = new Mock<IAppLogger>();
+            var service = new AssignmentService(logger.Object, formatter.Object);
+            var assignment = new Assignment("test", "more test");
+
+            service.AddAssignment(assignment);
+            service.DeleteAssignment(assignment.Title);
+
+
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Finding assignment for deletion..."))), Times.Once);
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Assignment deleted"))), Times.Once);
+
+        }
+        [Fact]
+        public void Logger_ShouldBeCalledWhenUpdatingAssignment()
+        {
+
+            var formatter = new Mock<IAssignmentFormatter>();
+            var logger = new Mock<IAppLogger>();
+            var service = new AssignmentService(logger.Object, formatter.Object);
+            var assignment = new Assignment("test", "more test");
+
+            service.AddAssignment(assignment);
+            service.UpdateAssignment(assignment.Title, "new test", "more test");
+
+
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("finding assignment for update..."))), Times.Once);
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("assignment updated"))), Times.Once);
+
+        }
+
     }
 }

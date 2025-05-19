@@ -1,5 +1,6 @@
 ﻿using AssignmentManagement.Core;
-
+using AssignmentManagement.Core.Interfaces;
+using AssignmentManagement.Core.Models;
 using System;
 
 namespace AssignmentManagement.UI

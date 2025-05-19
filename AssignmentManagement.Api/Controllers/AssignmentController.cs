@@ -1,4 +1,6 @@
-﻿using AssignmentManagement.Core;
+﻿using AssignmentManagement.Core.Interfaces;
+using AssignmentManagement.Core.Models;
+using AssignmentManagement.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -25,6 +27,13 @@ namespace AssignmentManagement.API.Controllers
         public IActionResult Get(string title)
         {
             var assignment = _assignmentService.FindAssignmentByTitle(title);
+            return assignment is null ? NotFound() : Ok(assignment);
+        }
+        //GET api/<AssignmentController>/5
+        [HttpGet("{id:Guid}")]
+        public IActionResult Get(Guid id)
+        {
+            var assignment = _assignmentService.FindAssignmentById(id);
             return assignment is null ? NotFound() : Ok(assignment);
         }
 

@@ -1,0 +1,7 @@
+The main difference in working with HTTP vs console input/output is that console rely on string inputs 
+and outputs while HTTP must handle routing, response types, and states.
+
+The main challenge I faced was in testing. Since I updated AssignmentService to take two injected
+ dependencies, my tests needed to be updated with the proper constructor and mocks.
+
+By separating responsibilities, classes become more cohesive and less reliant on things that they do not need.

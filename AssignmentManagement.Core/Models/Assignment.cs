@@ -1,12 +1,13 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AssignmentManagement.Core
+namespace AssignmentManagement.Core.Models
 {
     public class Assignment
     {
         public string Title { get; private set; }
         public string Description { get; private set; }
         public bool IsCompleted { get; private set; }
+        public Guid Id { get; } = new Guid();
 
         public Assignment(string title, string description)
         {

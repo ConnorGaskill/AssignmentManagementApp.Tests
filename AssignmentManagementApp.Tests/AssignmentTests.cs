@@ -1,6 +1,8 @@
 ﻿namespace AssignmentManagementApp.Tests
 {
     using AssignmentManagement.Core;
+    using AssignmentManagement.Core.Models;
+
     public class AssignmentTests
     {
         [Fact]

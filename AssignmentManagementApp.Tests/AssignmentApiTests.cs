@@ -6,6 +6,7 @@ using AssignmentManagement.Core;
 using AssignmentManagement.API;
 using System.Text.Json;
 using System.Text;
+using AssignmentManagement.Core.Models;
 
 namespace AssignmentManagement.Tests
 {

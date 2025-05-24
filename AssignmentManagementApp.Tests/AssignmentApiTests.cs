@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-//using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net.Http.Json;
 using System.Net;
 using AssignmentManagement.Core;
@@ -7,6 +6,7 @@ using AssignmentManagement.API;
 using System.Text.Json;
 using System.Text;
 using AssignmentManagement.Core.Models;
+using AssignmentManagement.Core.DTOs;
 
 namespace AssignmentManagement.Tests
 {
@@ -78,6 +78,45 @@ namespace AssignmentManagement.Tests
 
             Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
 
+        }
+        [Fact]
+        public async Task Put_ShouldUpdateAssignment()
+        {
+            string assignmentTitle = "Software Engineering";
+            string assignmentDescription = "Make integration tests";
+            Priority priority = Priority.High;
+
+            var assignmentJson = new StringContent(JsonSerializer.Serialize(new Assignment(
+                    assignmentTitle,
+                    assignmentDescription,
+                    priority)
+            ), Encoding.UTF8, "application/json");
+
+            UpdateAssignmentRequest request = new UpdateAssignmentRequest("Software Engineering")
+            {
+                NewPriority = Priority.Low,
+                NewDescription = "Almost done"
+            };
+
+            var updateJson = new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await _client.PostAsync("/api/Assignment", assignmentJson);
+            response.EnsureSuccessStatusCode();
+
+            var updateResponse = await _client.PutAsync("/api/Assignment", updateJson);
+            response.EnsureSuccessStatusCode();
+
+            var getResponse = await _client.GetAsync("/api/Assignment");
+            getResponse.EnsureSuccessStatusCode();
+
+            var assignment = await getResponse.Content.ReadAsStringAsync();
+
+            Assert.Contains("Software Engineering", assignment);
+            Assert.Contains("Almost done", assignment);
+            Assert.Contains("0", assignment);
         }
 
     }

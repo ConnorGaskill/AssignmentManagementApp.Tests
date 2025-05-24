@@ -1,4 +1,5 @@
-﻿using AssignmentManagement.Core.Interfaces;
+﻿using AssignmentManagement.Core.DTOs;
+using AssignmentManagement.Core.Interfaces;
 using AssignmentManagement.Core.Models;
 using AssignmentManagement.Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -46,10 +47,15 @@ namespace AssignmentManagement.API.Controllers
         }
 
         // PUT api/<AssignmentController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(string oldTitle, string newTitle, string newDescription, [FromBody] Assignment assignemnt)
+        [HttpPut]
+        public IActionResult Put([FromBody] UpdateAssignmentRequest request)
         {
-            _assignmentService.UpdateAssignment(oldTitle, newTitle, newDescription);
+            bool success = _assignmentService.UpdateAssignment(request);
+            if (!success)
+            {
+                return NotFound($"Assignment with title '{request.OldTitle}' not found or conflict occurred.");
+            }
+
             return NoContent();
         }
 

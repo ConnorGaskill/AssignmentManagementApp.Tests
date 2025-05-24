@@ -6,7 +6,7 @@
     public class AssignmentTests
     {
         [Fact]
-        public void Constructor_ValidInput_ShouldCreateAssignment()
+        public void Constructor_ValidInputShouldCreateAssignment()
         {
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
             Assert.Equal("Read Chapter 2", assignment.Title);
@@ -15,16 +15,31 @@
         }
 
         [Fact]
-        public void Constructor_BlankTitle_ShouldThrowException()
+        public void Constructor_SetsMediumAsDefaultPriority()
+        {
+            var assignment = new Assignment("Read Chapter 2", "Summarize key points");
+
+            Assert.Equal(Priority.Medium, assignment.Priority);
+        }
+
+        [Fact]
+        public void Constructor_AcceptsHighPriority()
+        {
+            var assignment = new Assignment("Urgent Task", "Do it now", Priority.High);
+            Assert.Equal(Priority.High, assignment.Priority);
+        }
+
+        [Fact]
+        public void Constructor_BlankTitleShouldThrowException()
         {
             Assert.Throws<ArgumentException>(() => new Assignment("", "Valid description"));
         }
 
         [Fact]
-        public void Update_BlankDescription_ShouldThrowException()
+        public void Update_BlankDescriptionShouldThrowException()
         {
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
-            Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", ""));
+            Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", "", assignment.Priority));
         }
 
         [Fact]
@@ -34,5 +49,6 @@
             assignment.MarkComplete();
             Assert.True(assignment.IsCompleted);
         }
+
     }
 }

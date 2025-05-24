@@ -1,4 +1,5 @@
-﻿using AssignmentManagement.Core.Models;
+﻿using AssignmentManagement.Core.DTOs;
+using AssignmentManagement.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,6 @@ namespace AssignmentManagement.Core.Interfaces
         public Assignment FindAssignmentById(Guid id);
         public bool MarkAssignmentComplete(string title);
         public bool DeleteAssignment(string title);
-        public bool UpdateAssignment(string oldTitle, string newTitle, string newDescription);
+        public bool UpdateAssignment(UpdateAssignmentRequest request);
     }
 }

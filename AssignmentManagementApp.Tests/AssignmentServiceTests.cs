@@ -6,6 +6,7 @@
     using AssignmentManagement.Core.Models;
     using Moq;
     using AssignmentManagement.Core.Interfaces;
+    using AssignmentManagement.Core.DTOs;
 
     public class AssignmentServiceTests
     {
@@ -106,13 +107,25 @@
             var service = new AssignmentService(logger.Object, formatter.Object);
             var assignment = new Assignment("test", "more test");
 
+            var originalTitle = assignment.Title;
+            var originalDescription = assignment.Description;
+            
             service.AddAssignment(assignment);
-            service.UpdateAssignment(assignment.Title, "new test", "more test");
 
+            var updateRequest = new UpdateAssignmentRequest("test")
+            {
+                NewTitle = "new test",
+                NewDescription = "test test"
+            };
 
-            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("finding assignment for update..."))), Times.Once);
-            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("assignment updated"))), Times.Once);
+            service.UpdateAssignment(updateRequest);
 
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
+                "Finding assignment to update..."))), Times.Once);
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
+                $"Assignment title: {originalTitle} changed to {updateRequest.NewTitle}"))), Times.Once);
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
+                $"Assignment description: {originalDescription} changed to {updateRequest.NewDescription}"))), Times.Once);
         }
 
     }

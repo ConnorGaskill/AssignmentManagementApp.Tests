@@ -1,7 +1,9 @@
 ﻿using AssignmentManagement.Core;
+using AssignmentManagement.Core.DTOs;
 using AssignmentManagement.Core.Interfaces;
 using AssignmentManagement.Core.Models;
 using System;
+using System.Reflection.Metadata;
 
 namespace AssignmentManagement.UI
 {
@@ -65,14 +67,58 @@ namespace AssignmentManagement.UI
 
         private void AddAssignment()
         {
-            Console.Write("Enter assignment title: ");
+            Console.WriteLine("Enter assignment title: ");
             var title = Console.ReadLine();
-            Console.Write("Enter assignment description: ");
+            Console.WriteLine("Enter assignment description: ");
             var description = Console.ReadLine();
+            Console.WriteLine("(Optional) Enter assignment Priority (default: Medium)");
+            string userInput = Console.ReadLine();
+
+            bool looping = false;
+
+            Priority priority = Priority.Medium;
+
+
+            while (looping)
+            {
+                Console.WriteLine("Enter a new priority level:\n" +
+                    "(H)igh\n" +
+                    "(M)edium\n" +
+                    "(L)ow\n" +
+                    "Or press ENTER to skip: ");
+
+                userInput = Console.ReadLine();
+
+                switch (userInput.Trim().ToUpper())
+                {
+                    case "HIGH":
+                    case "H":
+                        priority = Priority.High;
+                        looping = false;
+                        break;
+                    case "MEDIUM":
+                    case "M":
+                        priority = Priority.Medium;
+                        looping = false;
+                        break;
+                    case "LOW":
+                    case "L":
+                        priority = Priority.Low;
+                        looping = false;
+                        break;
+                    case "":
+                        looping = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input");
+                        break;
+                }
+            }
 
             try
             {
-                var assignment = new Assignment(title, description);
+                var assignment = new Assignment(title, description, priority);
+
                 if (_assignmentService.AddAssignment(assignment))
                 {
                     Console.WriteLine("Assignment added successfully.");
@@ -99,7 +145,7 @@ namespace AssignmentManagement.UI
 
             foreach (var assignment in assignments)
             {
-                Console.WriteLine($"- {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
+                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
             }
         }
 
@@ -114,7 +160,7 @@ namespace AssignmentManagement.UI
 
             foreach (var assignment in assignments)
             {
-                Console.WriteLine($"- {assignment.Title}: {assignment.Description} (Incomplete: {assignment.IsCompleted})");
+                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Incomplete: {assignment.IsCompleted})");
             }
         }
 
@@ -144,29 +190,77 @@ namespace AssignmentManagement.UI
             }
             else
             {
-                Console.WriteLine($"Found: {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
+                Console.WriteLine($"Found: (Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
             }
         }
 
         private void UpdateAssignment()
         {
-            Console.Write("Enter the current title of the assignment: ");
-            var oldTitle = Console.ReadLine();
-            Console.Write("Enter the new title: ");
-            var newTitle = Console.ReadLine();
-            Console.Write("Enter the new description: ");
-            var newDescription = Console.ReadLine();
+            string? userInput;
 
-            if (_assignmentService.UpdateAssignment(oldTitle, newTitle, newDescription))
-            {
-                Console.WriteLine("Assignment updated successfully.");
+            Console.WriteLine("Enter the current title of the assignment you wish to update or press ENTER to quit: ");
+
+            userInput = Console.ReadLine();
+
+            if (String.IsNullOrEmpty(userInput))
+                return;
+
+            UpdateAssignmentRequest request = new UpdateAssignmentRequest(userInput);
+
+            Console.WriteLine("Enter a new title or press ENTER to skip: ");
+
+            userInput = Console.ReadLine();
+
+            if (!String.IsNullOrEmpty(userInput))
+                request.NewTitle = userInput;
+
+            Console.WriteLine("Enter a new description or press ENTER to skip: ");
+
+            userInput = Console.ReadLine();
+
+            if (!String.IsNullOrEmpty(userInput))
+                request.NewDescription = userInput;
+
+            bool looping = true;
+
+            while (looping) {
+                Console.WriteLine("Enter a new priority level:\n" +
+                    "(H)igh\n" +
+                    "(M)edium\n" +
+                    "(L)ow\n" +
+                    "Or press ENTER to skip: ");
+
+                userInput = Console.ReadLine();
+
+
+                switch (userInput.Trim().ToUpper())
+                {
+                    case "HIGH":
+                    case "H":
+                        request.NewPriority = Priority.High;
+                        looping = false;
+                        break;
+                    case "MEDIUM":
+                    case "M":
+                        request.NewPriority = Priority.Medium;
+                        looping = false;
+                        break;
+                    case "LOW":
+                    case "L":
+                        request.NewPriority = Priority.Low;
+                        looping = false;
+                        break;
+                    case "":
+                        looping = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input");
+                        break;
+                }
             }
-            else
-            {
-                Console.WriteLine("Update failed. Title may conflict or assignment not found.");
-            }
+            _assignmentService.UpdateAssignment(request);
+            return;
         }
-
         private void DeleteAssignment()
         {
             Console.Write("Enter the title of the assignment to delete: ");

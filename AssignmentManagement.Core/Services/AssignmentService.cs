@@ -1,4 +1,5 @@
-﻿using AssignmentManagement.Core.Interfaces;
+﻿using AssignmentManagement.Core.DTOs;
+using AssignmentManagement.Core.Interfaces;
 using AssignmentManagement.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -91,25 +92,36 @@ namespace AssignmentManagement.Core.Services
         }
 
         // TODO: Implement method to update an assignment (title and description)
-        public bool UpdateAssignment(string oldTitle, string newTitle, string newDescription)
+        public bool UpdateAssignment(UpdateAssignmentRequest request)
         {
-            _logger.Log("finding assignment for update...");
-            var assignment = FindAssignmentByTitle(oldTitle);
-            if (assignment == null)
-            {
-                _logger.Log("No assignments");
+            _logger.Log("Finding assignment to update...");
+            Assignment? assignment = FindAssignmentByTitle(request.OldTitle);
+            if (assignment == null) {
+
+                _logger.Log("Assignment not found");
                 return false;
             }
 
-            if (!oldTitle.Equals(newTitle, StringComparison.OrdinalIgnoreCase) &&
-                _assignments.Any(a => a.Title.Equals(newTitle, StringComparison.OrdinalIgnoreCase)))
+            if (request.NewTitle != null &&
+                !request.OldTitle.Equals(request.NewTitle, StringComparison.OrdinalIgnoreCase) &&
+                _assignments.Any(a => a.Title.Equals(request.NewTitle, StringComparison.OrdinalIgnoreCase)))
             {
-                _logger.Log($"Assignment \"{oldTitle}\" not found");
-                return false; // Conflict
+                _logger.Log($"There is already an Assignment with title {request.NewTitle}");
+                return false;
             }
 
-            assignment.Update(newTitle, newDescription);
-            _logger.Log("assignment updated");
+            string newTitle = request.NewTitle ?? assignment.Title;
+            if(!string.IsNullOrEmpty(request.NewTitle))
+                _logger.Log($"Assignment title: {assignment.Title} changed to {request.NewTitle}");
+            string newDescription = request.NewDescription ?? assignment.Description;
+            if(!string.IsNullOrEmpty(request.NewDescription))
+                _logger.Log($"Assignment description: {assignment.Description} changed to {request.NewDescription}");
+            Priority newPriority = request.NewPriority ?? assignment.Priority;
+            if (request.NewPriority.HasValue)
+                _logger.Log($"Assignment priority: {assignment.Priority} changed to {request.NewPriority}");
+
+            assignment.Update(newTitle, newDescription, newPriority);
+
             return true;
         }
 

@@ -5,6 +5,7 @@ using AssignmentManagement.UI;
 using Moq;
 using AssignmentManagement.Core.Interfaces;
 using AssignmentManagement.Core.Models;
+using AssignmentManagement.Core.DTOs;
 
 public class ConsoleUITests
 {
@@ -70,6 +71,33 @@ public class ConsoleUITests
 
         Assert.Equal(expected.Title, result.Title);
         Assert.Equal(expected.Description, result.Description);
+        Assert.Equal(expected.Priority, result.Priority);
+        Assert.Equal(expected.Notes, result.Notes);
         mockService.Verify(s => s.FindAssignmentByTitle("Read Chapter 2"), Times.Once);
+    }
+    [Fact]
+    public void UpdateAssignment_ShouldReadDTOCorrectly()
+    {
+        var mockService = new Mock<IAssignmentService>();
+        var consoleUI = new ConsoleUI(mockService.Object);
+
+        var assignment = new Assignment("Read Chapter 2", "Summarize key points");
+
+        var request = new UpdateAssignmentRequest(assignment.Title)
+        {
+            NewTitle = "Test",
+            NewDescription = "Test desc",
+            NewNotes = "This works",
+            NewPriority = Priority.Low
+        };
+
+
+        mockService.Object.UpdateAssignment(request);
+
+        mockService.Verify(s => s.UpdateAssignment(It.Is<UpdateAssignmentRequest>(
+        r => r.NewTitle == "Test" 
+        && r.NewDescription == "Test desc" 
+        && r.NewPriority == Priority.Low 
+        && r.NewNotes == "This works")), Times.Once);
     }
 }

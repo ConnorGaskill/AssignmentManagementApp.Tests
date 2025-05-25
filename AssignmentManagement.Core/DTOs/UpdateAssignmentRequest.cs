@@ -14,6 +14,7 @@ namespace AssignmentManagement.Core.DTOs
         public string? NewTitle { get; set; }
         public string? NewDescription { get; set; }
         public Priority? NewPriority { get; set; }
+        public string? NewNotes { get; set; }
 
         public UpdateAssignmentRequest(string oldTitle)
             {

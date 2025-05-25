@@ -22,7 +22,8 @@ namespace AssignmentManagement.Tests
             Assert.Equal(
                 $"ID: [{assignment.Id}], ({assignment.Priority}) Title: {assignment.Title}, " +
                 $"Description: {assignment.Description}, " +
-                $"Is Completed?: {assignment.IsCompleted}", formattedAssignment);
+                $"Is Completed?: {assignment.IsCompleted}, " +
+                $"Notes: {assignment.Notes}", formattedAssignment);
 
 
         }
@@ -42,8 +43,10 @@ namespace AssignmentManagement.Tests
 
             
             var expectedOutput = string.Join("\n", assignments.Select(a =>
-                $"ID: [{a.Id}], ({a.Priority}) Title: {a.Title}, Description: {a.Description}," +
-                $" Is Completed?: {a.IsCompleted}"));
+                $"ID: [{a.Id}], ({a.Priority}) Title: {a.Title}, " +
+                $"Description: {a.Description}, " +
+                $"Is Completed?: {a.IsCompleted}, " +
+                $"Notes: {a.Notes}"));
 
             Assert.Equal(expectedOutput, formattedAssignments);
         }

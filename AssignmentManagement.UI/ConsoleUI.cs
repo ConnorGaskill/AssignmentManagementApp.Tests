@@ -29,7 +29,7 @@ namespace AssignmentManagement.UI
                 Console.WriteLine("6. Update Assignment");
                 Console.WriteLine("7. Delete Assignment");
                 Console.WriteLine("0. Exit");
-                Console.Write("Choose an option: ");
+                Console.WriteLine("Choose an option: ");
                 var input = Console.ReadLine();
 
                 switch (input)
@@ -71,17 +71,16 @@ namespace AssignmentManagement.UI
             var title = Console.ReadLine();
             Console.WriteLine("Enter assignment description: ");
             var description = Console.ReadLine();
-            Console.WriteLine("(Optional) Enter assignment Priority (default: Medium)");
-            string userInput = Console.ReadLine();
 
-            bool looping = false;
+            bool looping = true;
 
             Priority priority = Priority.Medium;
 
+            string userInput;
 
             while (looping)
             {
-                Console.WriteLine("Enter a new priority level:\n" +
+                Console.WriteLine("(Optional) Enter a new priority level:\n" +
                     "(H)igh\n" +
                     "(M)edium\n" +
                     "(L)ow\n" +
@@ -115,9 +114,13 @@ namespace AssignmentManagement.UI
                 }
             }
 
+            Console.WriteLine("(Optional) Enter your notes");
+            string notes = Console.ReadLine();
+            
+
             try
             {
-                var assignment = new Assignment(title, description, priority);
+                var assignment = new Assignment(title, description, priority, notes);
 
                 if (_assignmentService.AddAssignment(assignment))
                 {
@@ -145,7 +148,8 @@ namespace AssignmentManagement.UI
 
             foreach (var assignment in assignments)
             {
-                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
+                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted}) \n" +
+                    $" Notes: {assignment.Notes}");
             }
         }
 
@@ -160,7 +164,8 @@ namespace AssignmentManagement.UI
 
             foreach (var assignment in assignments)
             {
-                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Incomplete: {assignment.IsCompleted})");
+                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Incomplete: {assignment.IsCompleted}) \n" +
+                    $" Notes: {assignment.Notes}");
             }
         }
 
@@ -190,7 +195,8 @@ namespace AssignmentManagement.UI
             }
             else
             {
-                Console.WriteLine($"Found: (Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted})");
+                Console.WriteLine($"Found: (Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted}) \n" +
+                    $" Notes: {assignment.Notes}");
             }
         }
 
@@ -258,6 +264,18 @@ namespace AssignmentManagement.UI
                         break;
                 }
             }
+
+            string? notes = null;
+
+            Console.WriteLine("Enter your notes or press ENTER to skip: ");
+
+            userInput = Console.ReadLine();
+
+            notes = userInput;
+
+            if (!String.IsNullOrEmpty(userInput))
+                request.NewNotes = notes;
+
             _assignmentService.UpdateAssignment(request);
             return;
         }

@@ -8,9 +8,11 @@
         [Fact]
         public void Constructor_ValidInputShouldCreateAssignment()
         {
-            var assignment = new Assignment("Read Chapter 2", "Summarize key points");
+            var assignment = new Assignment("Read Chapter 2", "Summarize key points", Priority.High, "Notes");
             Assert.Equal("Read Chapter 2", assignment.Title);
             Assert.Equal("Summarize key points", assignment.Description);
+            Assert.Equal(Priority.High, assignment.Priority);
+            Assert.Equal("Notes", assignment.Notes);
             Assert.False(assignment.IsCompleted);
         }
 
@@ -20,6 +22,13 @@
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
 
             Assert.Equal(Priority.Medium, assignment.Priority);
+        }
+        [Fact]
+        public void Constructor_SetsEmptyStringAsDefaultNote()
+        {
+            var assignment = new Assignment("Read Chapter 2", "Summarize key points", Priority.Medium);
+
+            Assert.Equal(assignment.Notes, String.Empty);
         }
 
         [Fact]
@@ -39,7 +48,7 @@
         public void Update_BlankDescriptionShouldThrowException()
         {
             var assignment = new Assignment("Read Chapter 2", "Summarize key points");
-            Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", "", assignment.Priority));
+            Assert.Throws<ArgumentException>(() => assignment.Update("Valid title", "", assignment.Priority, assignment.Notes));
         }
 
         [Fact]

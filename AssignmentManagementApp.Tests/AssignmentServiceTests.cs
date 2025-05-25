@@ -115,7 +115,8 @@
             var updateRequest = new UpdateAssignmentRequest("test")
             {
                 NewTitle = "new test",
-                NewDescription = "test test"
+                NewDescription = "test test",
+                NewNotes = "Notes"
             };
 
             service.UpdateAssignment(updateRequest);
@@ -126,6 +127,8 @@
                 $"Assignment title: {originalTitle} changed to {updateRequest.NewTitle}"))), Times.Once);
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
                 $"Assignment description: {originalDescription} changed to {updateRequest.NewDescription}"))), Times.Once);
+            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
+                $"Notes: {""} changed to {updateRequest.NewNotes}"))), Times.Once);
         }
 
     }

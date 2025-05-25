@@ -1,0 +1,70 @@
+Student Name: Connor Gaskill
+Date Submitted: 5/25/2025
+
+---
+PURPOSE OF CHANGE:
+Briefly describe the addition of the Notes field and why it matters.
+
+Notes will allow users to add additional information to an assignment that 
+would otherwise not be germane to its title or description. Users may want 
+to personalize assignments created by others or add commentary as they work 
+to complete assignments.
+
+This change is predictable and relevant to how this application should be 
+used. By adding the DTO in the last commit, this change will be fairly 
+simple to complete and will not accrue any technical debt.
+---
+SUMMARY OF CHANGES:
+- Files and components modified
+- Methods updated or added
+
+UpdateAssignmentRequest:
+Added Notes to DTO
+Assignment Model:
+Added Notes notes = “” to constructor
+Assignment Formatter:
+Added Notes to all methods’ out strings
+Assignment Service:
+Updated the update method to include Notes
+Tests:
+Created UpdateAssignment_ShouldReadDTOCorrectly() in ConsoleUI Tests
+Added Notes field to all Tests that check fields.
+---
+TDD PROCESS USED:
+Outline test-first implementation steps.
+Add Notes field to Assignment Tests
+Tests fail.
+Update Assignment Model to include Notes
+Tests Pass.
+Added test to make sure ConsoleUI reads DTO with notes
+Test Fails.
+Add Notes to DTO
+Test Passes
+Added Notes to logger test
+Test Fails
+Added Notes UpdateAssignment in AssignmentService
+Test passes
+Added Notes to Formatter Tests
+Tests Fail
+Add Notes to Formatter
+Tests Pass
+
+---
+CHALLENGES OR DESIGN DECISIONS:
+Note how you ensured backward compatibility and integration.
+
+Adding notes was not any different than adding priority. Now that I am 
+using a DTO, adding new fields to assignment does not require too many changes.
+
+---
+NEXT STEPS OR RECOMMENDATIONS:
+What you might enhance or generalize in future iterations.
+Depending on system constraints, Notes should be updated to a List<string> over 
+a string type. This change will allow users to better organize their notes, 
+delete them, and edit specific notes. Knowing that change is likely, I have 
+put off redesigning the ConsoleUI.
+
+Some methods in the ConsoleUI are becoming too big and it would make more sense
+to include sub-menus (for methods like Update) that manage more user input. 
+Splitting off menu logic into smaller methods will reduce boilerplate code and
+improve flexibility.

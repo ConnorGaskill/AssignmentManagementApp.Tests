@@ -113,14 +113,20 @@ namespace AssignmentManagement.Core.Services
             string newTitle = request.NewTitle ?? assignment.Title;
             if(!string.IsNullOrEmpty(request.NewTitle))
                 _logger.Log($"Assignment title: {assignment.Title} changed to {request.NewTitle}");
+
             string newDescription = request.NewDescription ?? assignment.Description;
             if(!string.IsNullOrEmpty(request.NewDescription))
                 _logger.Log($"Assignment description: {assignment.Description} changed to {request.NewDescription}");
+
             Priority newPriority = request.NewPriority ?? assignment.Priority;
             if (request.NewPriority.HasValue)
                 _logger.Log($"Assignment priority: {assignment.Priority} changed to {request.NewPriority}");
 
-            assignment.Update(newTitle, newDescription, newPriority);
+            string newNotes = request.NewNotes ?? assignment.Notes;
+            if (!string.IsNullOrEmpty(request.NewNotes))
+                _logger.Log($"Notes: {assignment.Notes} changed to {request.NewNotes}");
+
+            assignment.Update(newTitle, newDescription, newPriority, newNotes);
 
             return true;
         }

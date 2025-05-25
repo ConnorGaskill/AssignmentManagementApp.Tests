@@ -85,17 +85,20 @@ namespace AssignmentManagement.Tests
             string assignmentTitle = "Software Engineering";
             string assignmentDescription = "Make integration tests";
             Priority priority = Priority.High;
+            string notes = "notes";
 
             var assignmentJson = new StringContent(JsonSerializer.Serialize(new Assignment(
                     assignmentTitle,
                     assignmentDescription,
-                    priority)
+                    priority,
+                    notes)
             ), Encoding.UTF8, "application/json");
 
             UpdateAssignmentRequest request = new UpdateAssignmentRequest("Software Engineering")
             {
                 NewPriority = Priority.Low,
-                NewDescription = "Almost done"
+                NewDescription = "Almost done",
+                NewNotes = "New notes"
             };
 
             var updateJson = new StringContent(
@@ -116,7 +119,8 @@ namespace AssignmentManagement.Tests
 
             Assert.Contains("Software Engineering", assignment);
             Assert.Contains("Almost done", assignment);
-            Assert.Contains("0", assignment);
+            Assert.Contains("\"priority\":0", assignment);
+            Assert.Contains("New notes", assignment);
         }
 
     }

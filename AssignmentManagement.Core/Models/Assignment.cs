@@ -9,8 +9,9 @@ namespace AssignmentManagement.Core.Models
         public bool IsCompleted { get; private set; } = false;
         public Guid Id { get; } = new Guid();
         public Priority Priority { get; private set; }
+        public string Notes {  get; private set; }
 
-        public Assignment(string title, string description, Priority priority = Priority.Medium)
+        public Assignment(string title, string description, Priority priority = Priority.Medium, string notes = "")
         {
             Validate(title, nameof(title));
             Validate(description, nameof(description));
@@ -18,9 +19,10 @@ namespace AssignmentManagement.Core.Models
             Title = title;
             Description = description;
             Priority = priority;
+            Notes = notes;
         }
 
-        public void Update(string newTitle, string newDescription, Priority priority)
+        public void Update(string newTitle, string newDescription, Priority priority, string newNotes)
         {
             Validate(newTitle, nameof(newTitle));
             Validate(newDescription, nameof(newDescription));
@@ -28,6 +30,7 @@ namespace AssignmentManagement.Core.Models
             Priority = priority;
             Title = newTitle;
             Description = newDescription;
+            Notes = newNotes;
         }
 
         public void MarkComplete()

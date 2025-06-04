@@ -110,26 +110,32 @@ namespace AssignmentManagement.Core.Services
                 return false;
             }
 
-            string newTitle = request.NewTitle ?? assignment.Title;
-            if(!string.IsNullOrEmpty(request.NewTitle))
-                _logger.Log($"Assignment title: {assignment.Title} changed to {request.NewTitle}");
+            string newTitle = ValidateRequest(request.NewTitle, assignment.Title);
 
-            string newDescription = request.NewDescription ?? assignment.Description;
-            if(!string.IsNullOrEmpty(request.NewDescription))
-                _logger.Log($"Assignment description: {assignment.Description} changed to {request.NewDescription}");
+            string newDescription = ValidateRequest(request.NewDescription, assignment.Description);
 
             Priority newPriority = request.NewPriority ?? assignment.Priority;
             if (request.NewPriority.HasValue)
                 _logger.Log($"Assignment priority: {assignment.Priority} changed to {request.NewPriority}");
 
-            string newNotes = request.NewNotes ?? assignment.Notes;
-            if (!string.IsNullOrEmpty(request.NewNotes))
-                _logger.Log($"Notes: {assignment.Notes} changed to {request.NewNotes}");
+            string newNotes = ValidateRequest(request.NewNotes, assignment.Notes);
 
             assignment.Update(newTitle, newDescription, newPriority, newNotes);
 
             return true;
         }
 
+        public string ValidateRequest(string request, string assignmentDefault)
+        {
+            string newValue = request ?? assignmentDefault;
+
+            if (!newValue.Equals(assignmentDefault, StringComparison.OrdinalIgnoreCase))
+                _logger.Log($"{assignmentDefault} changed to {request}");
+
+            return newValue;
+        }
+
     }
+
+
 }

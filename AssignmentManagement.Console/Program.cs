@@ -10,7 +10,7 @@ namespace AssignmentManagement.Console
 {
     public class Program
     {
-        private static void Main(string[] args) // 🔥 Static Main method — this is required
+        private static void Main(string[] args)
         {
             var services = new ServiceCollection();
 

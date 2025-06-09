@@ -3,6 +3,7 @@ using AssignmentManagement.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,5 +20,39 @@ namespace AssignmentManagement.Core.Services
         {
             return $"ID: [{assignment.Id}], ({assignment.Priority}) Title: {assignment.Title}, Description: {assignment.Description}, Is Completed?: {assignment.IsCompleted}, Notes: {assignment.Notes}";
         }
+
+        public string FormatPriorityToString(Priority priority) {
+
+            switch (priority) { 
+            
+                case Priority.Low:
+                    return "Low";
+                case Priority.Medium:
+                    return "Medium";
+                default:
+                    return "High";
+
+            }
+        }
+
+        public Priority? FormatStringToPriority(string priority) {
+
+            switch (priority.Trim().ToUpper())
+            {
+                case "HIGH":
+                case "H":
+                    return Priority.High;
+                case "MEDIUM":
+                case "M":
+                    return Priority.Medium;
+                case "LOW":
+                case "L":
+                    return Priority.Low;
+                default:
+                    return null;
+            }
+
+        }
+
     }
 }

@@ -51,8 +51,6 @@ namespace AssignmentManagement.Core.Services
 
             return _assignments.Where(a => !a.IsCompleted).ToList();
         }
-
-        // TODO: Implement method to find an assignment by title
         public Assignment? FindAssignmentByTitle(string title)
         {
             return _assignments.FirstOrDefault(a => a.Title.Equals(
@@ -63,8 +61,6 @@ namespace AssignmentManagement.Core.Services
         {
             return _assignments.FirstOrDefault(a => a.Id == id);
         }
-
-        // TODO: Implement method to mark an assignment complete
         public bool MarkAssignmentComplete(string title)        
         {
             var assignment = FindAssignmentByTitle(title);
@@ -74,8 +70,6 @@ namespace AssignmentManagement.Core.Services
             assignment.MarkComplete();
             return true;
         }
-
-        // TODO: Implement method to delete an assignment by title
         public bool DeleteAssignment(string title)
         {
             _logger.Log("Finding assignment for deletion...");
@@ -90,8 +84,6 @@ namespace AssignmentManagement.Core.Services
             _logger.Log("Assignment deleted");
             return true;
         }
-
-        // TODO: Implement method to update an assignment (title and description)
         public bool UpdateAssignment(UpdateAssignmentRequest request)
         {
             _logger.Log("Finding assignment to update...");
@@ -133,6 +125,18 @@ namespace AssignmentManagement.Core.Services
                 _logger.Log($"{assignmentDefault} changed to {request}");
 
             return newValue;
+        }
+
+        public string FormatPriorityToString(Priority priority) {
+
+            return _formatter.FormatPriorityToString(priority);
+        
+        }
+
+        public Priority? FormatStringToPriority(string priority) { 
+        
+            return _formatter.FormatStringToPriority(priority);
+        
         }
 
     }

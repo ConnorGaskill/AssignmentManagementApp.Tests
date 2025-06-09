@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.VisualBasic;
+using System.Text.Json.Serialization;
 
 namespace AssignmentManagement.Core.Models
 {
@@ -37,7 +38,6 @@ namespace AssignmentManagement.Core.Models
         {
             IsCompleted = true;
         }
-
         private void Validate(string input, string fieldName)
         {
             if (string.IsNullOrWhiteSpace(input))

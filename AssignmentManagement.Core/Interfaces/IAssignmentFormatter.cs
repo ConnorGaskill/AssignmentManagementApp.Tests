@@ -11,5 +11,8 @@ namespace AssignmentManagement.Core.Interfaces
     {
         public string Format(List<Assignment> assignments);
         public string Format(Assignment assignment);
+        public string FormatPriorityToString(Priority priority);
+        public Priority? FormatStringToPriority(string priority);
+
     }
 }

@@ -21,5 +21,8 @@ namespace AssignmentManagement.Core.Interfaces
         public bool MarkAssignmentComplete(string title);
         public bool DeleteAssignment(string title);
         public bool UpdateAssignment(UpdateAssignmentRequest request);
+        public string FormatPriorityToString(Priority priority);
+        public Priority? FormatStringToPriority(string priority);
+
     }
 }

@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentManagement.API.Controllers
 {
+    /// <summary>
+    /// Controller for the API.
+    /// 
+    /// Responsible for translating Assignment data into HTTP requests.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AssignmentController : ControllerBase

@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace AssignmentManagement.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for the Assignment Service used as a middle 
+    /// layer to communicate with the Assignment class.
+    /// 
+    /// Responsible for repository manipulation, logging, and request handling.
+    /// </summary>
     public interface IAssignmentService
     {
         public bool AddAssignment(Assignment assignment);
@@ -21,5 +27,8 @@ namespace AssignmentManagement.Core.Interfaces
         public bool MarkAssignmentComplete(string title);
         public bool DeleteAssignment(string title);
         public bool UpdateAssignment(UpdateAssignmentRequest request);
+        public string FormatPriorityToString(Priority priority);
+        public Priority? FormatStringToPriority(string priority);
+
     }
 }

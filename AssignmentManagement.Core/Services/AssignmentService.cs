@@ -7,6 +7,14 @@ using System.Linq;
 
 namespace AssignmentManagement.Core.Services
 {
+    /// <summary>
+    /// Object representing the Assignment Service used as a middle 
+    /// layer to communicate with the Assignment class.
+    /// 
+    /// Responsible for repository manipulation, logging, and request handling.
+    /// 
+    /// Requires IAppLogger and IAssignmentFormatter to be injected.
+    /// </summary>
     public class AssignmentService : IAssignmentService
     {
         private readonly List<Assignment> _assignments = new();
@@ -27,7 +35,7 @@ namespace AssignmentManagement.Core.Services
             if (_assignments.Any(a => a.Title.Equals(assignment.Title, StringComparison.OrdinalIgnoreCase)))
             {
                 _logger.Log($"Assignment already exists:\n{_formatter.Format(assignment)}\n");
-                return false; // Duplicate title exists
+                return false;
             }
 
             _assignments.Add(assignment);
@@ -51,8 +59,6 @@ namespace AssignmentManagement.Core.Services
 
             return _assignments.Where(a => !a.IsCompleted).ToList();
         }
-
-        // TODO: Implement method to find an assignment by title
         public Assignment? FindAssignmentByTitle(string title)
         {
             return _assignments.FirstOrDefault(a => a.Title.Equals(
@@ -63,8 +69,6 @@ namespace AssignmentManagement.Core.Services
         {
             return _assignments.FirstOrDefault(a => a.Id == id);
         }
-
-        // TODO: Implement method to mark an assignment complete
         public bool MarkAssignmentComplete(string title)        
         {
             var assignment = FindAssignmentByTitle(title);
@@ -74,8 +78,6 @@ namespace AssignmentManagement.Core.Services
             assignment.MarkComplete();
             return true;
         }
-
-        // TODO: Implement method to delete an assignment by title
         public bool DeleteAssignment(string title)
         {
             _logger.Log("Finding assignment for deletion...");
@@ -90,8 +92,6 @@ namespace AssignmentManagement.Core.Services
             _logger.Log("Assignment deleted");
             return true;
         }
-
-        // TODO: Implement method to update an assignment (title and description)
         public bool UpdateAssignment(UpdateAssignmentRequest request)
         {
             _logger.Log("Finding assignment to update...");
@@ -110,26 +110,44 @@ namespace AssignmentManagement.Core.Services
                 return false;
             }
 
-            string newTitle = request.NewTitle ?? assignment.Title;
-            if(!string.IsNullOrEmpty(request.NewTitle))
-                _logger.Log($"Assignment title: {assignment.Title} changed to {request.NewTitle}");
+            string newTitle = ValidateRequest(request.NewTitle, assignment.Title);
 
-            string newDescription = request.NewDescription ?? assignment.Description;
-            if(!string.IsNullOrEmpty(request.NewDescription))
-                _logger.Log($"Assignment description: {assignment.Description} changed to {request.NewDescription}");
+            string newDescription = ValidateRequest(request.NewDescription, assignment.Description);
 
             Priority newPriority = request.NewPriority ?? assignment.Priority;
             if (request.NewPriority.HasValue)
                 _logger.Log($"Assignment priority: {assignment.Priority} changed to {request.NewPriority}");
 
-            string newNotes = request.NewNotes ?? assignment.Notes;
-            if (!string.IsNullOrEmpty(request.NewNotes))
-                _logger.Log($"Notes: {assignment.Notes} changed to {request.NewNotes}");
+            string newNotes = ValidateRequest(request.NewNotes, assignment.Notes);
 
             assignment.Update(newTitle, newDescription, newPriority, newNotes);
 
             return true;
         }
 
+        public string ValidateRequest(string request, string assignmentDefault)
+        {
+            string newValue = request ?? assignmentDefault;
+
+            if (!newValue.Equals(assignmentDefault, StringComparison.OrdinalIgnoreCase))
+                _logger.Log($"{assignmentDefault} changed to {request}");
+
+            return newValue;
+        }
+
+        public string FormatPriorityToString(Priority priority) {
+
+            return _formatter.FormatPriorityToString(priority);
+        
+        }
+
+        public Priority? FormatStringToPriority(string priority) { 
+        
+            return _formatter.FormatStringToPriority(priority);
+        
+        }
+
     }
+
+
 }

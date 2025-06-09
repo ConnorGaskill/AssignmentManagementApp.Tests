@@ -4,9 +4,15 @@ using AssignmentManagement.Core.Interfaces;
 using AssignmentManagement.Core.Models;
 using System;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 
 namespace AssignmentManagement.UI
 {
+    /// <summary>
+    /// Object representing the Console UI.
+    /// 
+    /// Responsible for queuing user input and printing to the console.
+    /// </summary>
     public class ConsoleUI
     {
         private readonly IAssignmentService _assignmentService;
@@ -44,16 +50,16 @@ namespace AssignmentManagement.UI
                         ListIncompleteAssignments();
                         break;
                     case "4":
-                        MarkAssignmentComplete(); // TODO
+                        MarkAssignmentComplete();
                         break;
                     case "5":
-                        SearchAssignmentByTitle(); // TODO
+                        SearchAssignmentByTitle();
                         break;
                     case "6":
-                        UpdateAssignment(); // TODO
+                        UpdateAssignment();
                         break;
                     case "7":
-                        DeleteAssignment(); // TODO
+                        DeleteAssignment();
                         break;
                     case "0":
                         Console.WriteLine("Goodbye!");
@@ -72,52 +78,11 @@ namespace AssignmentManagement.UI
             Console.WriteLine("Enter assignment description: ");
             var description = Console.ReadLine();
 
-            bool looping = true;
-
-            Priority priority = Priority.Medium;
-
-            string userInput;
-
-            while (looping)
-            {
-                Console.WriteLine("(Optional) Enter a new priority level:\n" +
-                    "(H)igh\n" +
-                    "(M)edium\n" +
-                    "(L)ow\n" +
-                    "Or press ENTER to skip: ");
-
-                userInput = Console.ReadLine();
-
-                switch (userInput.Trim().ToUpper())
-                {
-                    case "HIGH":
-                    case "H":
-                        priority = Priority.High;
-                        looping = false;
-                        break;
-                    case "MEDIUM":
-                    case "M":
-                        priority = Priority.Medium;
-                        looping = false;
-                        break;
-                    case "LOW":
-                    case "L":
-                        priority = Priority.Low;
-                        looping = false;
-                        break;
-                    case "":
-                        looping = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input");
-                        break;
-                }
-            }
+            Priority priority = GetUserPriority() ?? Priority.Medium;
 
             Console.WriteLine("(Optional) Enter your notes");
             string notes = Console.ReadLine();
             
-
             try
             {
                 var assignment = new Assignment(title, description, priority, notes);
@@ -227,43 +192,7 @@ namespace AssignmentManagement.UI
             if (!String.IsNullOrEmpty(userInput))
                 request.NewDescription = userInput;
 
-            bool looping = true;
-
-            while (looping) {
-                Console.WriteLine("Enter a new priority level:\n" +
-                    "(H)igh\n" +
-                    "(M)edium\n" +
-                    "(L)ow\n" +
-                    "Or press ENTER to skip: ");
-
-                userInput = Console.ReadLine();
-
-
-                switch (userInput.Trim().ToUpper())
-                {
-                    case "HIGH":
-                    case "H":
-                        request.NewPriority = Priority.High;
-                        looping = false;
-                        break;
-                    case "MEDIUM":
-                    case "M":
-                        request.NewPriority = Priority.Medium;
-                        looping = false;
-                        break;
-                    case "LOW":
-                    case "L":
-                        request.NewPriority = Priority.Low;
-                        looping = false;
-                        break;
-                    case "":
-                        looping = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input");
-                        break;
-                }
-            }
+            request.NewPriority = GetUserPriority();
 
             string? notes = null;
 
@@ -290,6 +219,40 @@ namespace AssignmentManagement.UI
             else
             {
                 Console.WriteLine("Assignment not found.");
+            }
+        }
+
+        private Priority? GetUserPriority()
+        {
+            string userInput;
+
+            while (true)
+            {
+                Console.WriteLine("Enter a new priority level:\n" +
+                        "(H)igh\n" +
+                        "(M)edium\n" +
+                        "(L)ow\n" +
+                        "Or press ENTER to skip: ");
+
+                userInput = Console.ReadLine();
+
+                if (!String.IsNullOrEmpty(userInput))
+                {
+                    Priority? priority = _assignmentService.FormatStringToPriority(userInput);
+
+                    if (priority == null)
+                    {
+                        Console.WriteLine("Invalid Priority");
+                    }
+                    else
+                    {
+                        return priority;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }

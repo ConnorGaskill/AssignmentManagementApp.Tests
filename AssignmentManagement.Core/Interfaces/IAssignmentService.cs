@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace AssignmentManagement.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for the Assignment Service used as a middle 
+    /// layer to communicate with the Assignment class.
+    /// 
+    /// Responsible for repository manipulation, logging, and request handling.
+    /// </summary>
     public interface IAssignmentService
     {
         public bool AddAssignment(Assignment assignment);

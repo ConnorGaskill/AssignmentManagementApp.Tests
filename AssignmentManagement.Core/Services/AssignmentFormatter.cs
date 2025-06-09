@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace AssignmentManagement.Core.Services
 {
+    /// <summary>
+    /// Object representing the formatter used by the assignment service.
+    /// Responsible for formatting Assignments and related fields into other data types.
+    /// </summary>
     public class AssignmentFormatter : IAssignmentFormatter
     {
         public string Format(List<Assignment> assignments)

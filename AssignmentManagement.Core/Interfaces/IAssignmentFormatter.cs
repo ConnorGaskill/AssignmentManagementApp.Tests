@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace AssignmentManagement.Core.Interfaces
 {
+    /// <summary>
+    /// Interface for the formatter used by the assignment service.
+    /// Responsible for formatting Assignments and related fields into other data types.
+    /// </summary>
     public interface IAssignmentFormatter
     {
         public string Format(List<Assignment> assignments);

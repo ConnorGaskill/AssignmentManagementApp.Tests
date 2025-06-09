@@ -8,6 +8,11 @@ using System.Runtime.CompilerServices;
 
 namespace AssignmentManagement.UI
 {
+    /// <summary>
+    /// Object representing the Console UI.
+    /// 
+    /// Responsible for queuing user input and printing to the console.
+    /// </summary>
     public class ConsoleUI
     {
         private readonly IAssignmentService _assignmentService;

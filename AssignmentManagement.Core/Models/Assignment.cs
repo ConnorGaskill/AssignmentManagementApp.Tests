@@ -3,6 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace AssignmentManagement.Core.Models
 {
+    /// <summary>
+    /// An object representing an Assignment containing a title (required), 
+    /// description (required), completion status (default: false),
+    /// ID (generated), priority (default: medium), and notes (optional).
+    /// 
+    /// This is the model for the API.
+    /// 
+    /// Responsible for simulating an assignment and modifying its contents.
+    /// 
+    /// Must be accessed by the Assignment Service.
+    /// </summary>
     public class Assignment
     {
         public string Title { get; private set; }

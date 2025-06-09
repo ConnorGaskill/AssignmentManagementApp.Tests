@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AssignmentManagement.Core.Models
 {
+    /// <summary>
+    /// Enum representing the range of Assignment Priorities.
+    /// </summary>
     public enum Priority
     {
         Low,

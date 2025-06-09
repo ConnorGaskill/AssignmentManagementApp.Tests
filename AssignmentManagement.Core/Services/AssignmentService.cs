@@ -7,6 +7,14 @@ using System.Linq;
 
 namespace AssignmentManagement.Core.Services
 {
+    /// <summary>
+    /// Object representing the Assignment Service used as a middle 
+    /// layer to communicate with the Assignment class.
+    /// 
+    /// Responsible for repository manipulation, logging, and request handling.
+    /// 
+    /// Requires IAppLogger and IAssignmentFormatter to be injected.
+    /// </summary>
     public class AssignmentService : IAssignmentService
     {
         private readonly List<Assignment> _assignments = new();
@@ -27,7 +35,7 @@ namespace AssignmentManagement.Core.Services
             if (_assignments.Any(a => a.Title.Equals(assignment.Title, StringComparison.OrdinalIgnoreCase)))
             {
                 _logger.Log($"Assignment already exists:\n{_formatter.Format(assignment)}\n");
-                return false; // Duplicate title exists
+                return false;
             }
 
             _assignments.Add(assignment);

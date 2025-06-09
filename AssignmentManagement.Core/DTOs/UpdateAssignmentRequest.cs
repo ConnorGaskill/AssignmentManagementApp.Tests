@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace AssignmentManagement.Core.DTOs
 {
+    /// <summary>
+    /// DTO for packaging Assignment update requests to be passed 
+    /// to the Assignment service.
+    /// </summary>
     public class UpdateAssignmentRequest
     {
         public string OldTitle { get; set; }

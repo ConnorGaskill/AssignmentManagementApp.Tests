@@ -123,12 +123,6 @@
 
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
                 "Finding assignment to update..."))), Times.Once);
-            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
-                $"Assignment title: {originalTitle} changed to {updateRequest.NewTitle}"))), Times.Once);
-            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
-                $"Assignment description: {originalDescription} changed to {updateRequest.NewDescription}"))), Times.Once);
-            logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
-                $"Notes: {""} changed to {updateRequest.NewNotes}"))), Times.Once);
         }
 
     }

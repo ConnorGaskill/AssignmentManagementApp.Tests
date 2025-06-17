@@ -33,7 +33,14 @@ namespace AssignmentManagement.Core.Models
             Priority = priority;
             Notes = notes;
         }
-
+        /// <summary>
+        /// Method for updating an assignment
+        /// Uses Validate to check is the title or description is null or empty
+        /// </summary>
+        /// <param name="newTitle">The new title</param>
+        /// <param name="newDescription">The new description</param>
+        /// <param name="priority">The new priority</param>
+        /// <param name="newNotes">The new notes</param>
         public void Update(string newTitle, string newDescription, Priority priority, string newNotes)
         {
             Validate(newTitle, nameof(newTitle));
@@ -45,10 +52,19 @@ namespace AssignmentManagement.Core.Models
             Notes = newNotes;
         }
 
+        /// <summary>
+        /// Marks the assignment complete
+        /// </summary>
         public void MarkComplete()
         {
             IsCompleted = true;
         }
+        /// <summary>
+        /// Checks if params are null or whitespace
+        /// </summary>
+        /// <param name="input">The string content</param>
+        /// <param name="fieldName">The name of the field being checked</param>
+        /// <exception cref="ArgumentException">Thrown if given values are null or whitespace</exception>
         private void Validate(string input, string fieldName)
         {
             if (string.IsNullOrWhiteSpace(input))

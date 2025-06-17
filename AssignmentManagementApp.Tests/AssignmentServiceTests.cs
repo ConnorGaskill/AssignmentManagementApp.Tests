@@ -124,6 +124,23 @@
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains(
                 "Finding assignment to update..."))), Times.Once);
         }
+        [Fact]
+        public void ValidateRequest_ShouldCoalesceTheCorrectValue()
+        {
+            var formatter = new Mock<IAssignmentFormatter>();
+            var logger = new Mock<IAppLogger>();
+            var service = new AssignmentService(logger.Object, formatter.Object);
+
+            var request = new UpdateAssignmentRequest("test");
+
+            var assignment = new Assignment("test", "test desc");
+
+            request.NewTitle = ("test 2");
+
+            var result = service.ValidateRequest(request.NewTitle, assignment.Title);
+
+            Assert.Equal(request.NewTitle, result);
+        }
 
     }
 }

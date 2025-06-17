@@ -10,7 +10,6 @@ namespace AssignmentManagement.UI
 {
     /// <summary>
     /// Object representing the Console UI.
-    /// 
     /// Responsible for queuing user input and printing to the console.
     /// </summary>
     public class ConsoleUI
@@ -21,7 +20,10 @@ namespace AssignmentManagement.UI
         {
             _assignmentService = assignmentService;
         }
-
+        /// <summary>
+        /// Launches the console UI
+        /// Main menu that reads user input and calls chosen methods
+        /// </summary>
         public void Run()
         {
             while (true)
@@ -70,7 +72,12 @@ namespace AssignmentManagement.UI
                 }
             }
         }
-
+        /// <summary>
+        /// Calls the service to add an assignment
+        /// Queues the user to add all parameters
+        /// Prints an error to the console if the service throws an exception (assignment with 
+        /// matching title already exists)
+        /// </summary>
         private void AddAssignment()
         {
             Console.WriteLine("Enter assignment title: ");
@@ -101,7 +108,10 @@ namespace AssignmentManagement.UI
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
+        /// <summary>
+        /// Calls the service to format and prints all assignments to the console
+        /// Checks if there are no assignments and prints a message to the console
+        /// </summary>
         private void ListAllAssignments()
         {
             var assignments = _assignmentService.ListAll();
@@ -113,11 +123,14 @@ namespace AssignmentManagement.UI
 
             foreach (var assignment in assignments)
             {
-                Console.WriteLine($"-(Priority: {assignment.Priority}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted}) \n" +
+                Console.WriteLine($"-(Priority: {_assignmentService.FormatPriorityToString(assignment.Priority)}) {assignment.Title}: {assignment.Description} (Completed: {assignment.IsCompleted}) \n" +
                     $" Notes: {assignment.Notes}");
             }
         }
-
+        /// <summary>
+        /// Calls the service to format and prints all incomplete assignments to the console
+        /// Checks if there are no incomplete assignments and prints a message to the console
+        /// </summary>
         private void ListIncompleteAssignments()
         {
             var assignments = _assignmentService.ListIncomplete();
@@ -133,7 +146,10 @@ namespace AssignmentManagement.UI
                     $" Notes: {assignment.Notes}");
             }
         }
-
+        /// <summary>
+        /// Calls the service to mark an assignment complete
+        /// Prints a message to the console if the assignment was not found
+        /// </summary>
         private void MarkAssignmentComplete()
         {
             Console.Write("Enter the title of the assignment to mark complete: ");
@@ -147,7 +163,11 @@ namespace AssignmentManagement.UI
                 Console.WriteLine("Assignment not found.");
             }
         }
-
+        /// <summary>
+        /// Queues the user to provide an assignment title and calls the service to find and
+        /// print it
+        /// Prints a message to the console if the assignment could not be found
+        /// </summary>
         private void SearchAssignmentByTitle()
         {
             Console.Write("Enter the title to search: ");
@@ -164,7 +184,12 @@ namespace AssignmentManagement.UI
                     $" Notes: {assignment.Notes}");
             }
         }
-
+        /// <summary>
+        /// Queues the user to provide an assignment title and allows them to update its fields
+        /// Uses GetUserPriority to ensure users give a valid priority input
+        /// Calls the service to find and update an assignment matching the given title by 
+        /// using UpdateAssignmentRequest DTO
+        /// </summary>
         private void UpdateAssignment()
         {
             string? userInput;
@@ -208,6 +233,11 @@ namespace AssignmentManagement.UI
             _assignmentService.UpdateAssignment(request);
             return;
         }
+        /// <summary>
+        /// Queues the user for an assignment title and calls the service to find and delete an assignment
+        /// with a matching title
+        /// Prints a message if the deletion was successful
+        /// </summary>
         private void DeleteAssignment()
         {
             Console.Write("Enter the title of the assignment to delete: ");
@@ -221,7 +251,13 @@ namespace AssignmentManagement.UI
                 Console.WriteLine("Assignment not found.");
             }
         }
-
+        /// <summary>
+        /// Queues the user to input a valid Priority or skip.
+        /// </summary>
+        /// <returns>
+        /// Priority if the input was valid
+        /// Null if skipped
+        /// /returns>
         private Priority? GetUserPriority()
         {
             string userInput;

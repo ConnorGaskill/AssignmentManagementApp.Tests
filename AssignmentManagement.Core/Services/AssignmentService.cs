@@ -28,7 +28,16 @@ namespace AssignmentManagement.Core.Services
             _logger = logger;
             _formatter = formatter;
         }
-
+        /// <summary>
+        /// Adds an assignment to _assignments
+        /// The title of the assignment being added must be unique
+        /// Checks if the assignment title already exists
+        /// </summary>
+        /// <param name="assignment">The assignment being added</param>
+        /// <returns>
+        /// True if the assignment was added successfully
+        /// False if the assignment could not be added (duplicate title)
+        /// </returns>
         public bool AddAssignment(Assignment assignment)
         {
             _logger.Log("Adding assignment...");
@@ -42,13 +51,20 @@ namespace AssignmentManagement.Core.Services
             _logger.Log("Assignment added");
             return true;
         }
-
+        /// <summary>
+        /// Gets _assignments
+        /// </summary>
+        /// <returns>A list containing all assignments</returns>
         public List<Assignment> ListAll()
         {
             _logger.Log("Listing assignments...");
             return _assignments;
         }
-
+        /// <summary>
+        /// Gets a list of all incomplete assignments
+        /// </summary>
+        /// <returns>A list of incomplete assignments</returns>
+        /// <exception cref="ArgumentException">If _assignments is null or empty</exception>
         public List<Assignment> ListIncomplete()
         {
             _logger.Log("Listing incomplete assignments...");
@@ -59,16 +75,38 @@ namespace AssignmentManagement.Core.Services
 
             return _assignments.Where(a => !a.IsCompleted).ToList();
         }
+        /// <summary>
+        /// Gets an assignment based on a title
+        /// </summary>
+        /// <param name="title">The title of the assignment</param>
+        /// <returns>
+        /// An assignment matching a provided title
+        /// Null if there are no matching assignments
+        /// </returns>
         public Assignment? FindAssignmentByTitle(string title)
         {
             return _assignments.FirstOrDefault(a => a.Title.Equals(
                 title, StringComparison.OrdinalIgnoreCase));
         }
-
+        /// <summary>
+        /// Gets an assignment based on an ID
+        /// </summary>
+        /// <param name="id">The ID</param>
+        /// <returns>
+        /// An assignment matching a provided ID
+        /// </returns>
         public Assignment? FindAssignmentById(Guid id)
         {
             return _assignments.FirstOrDefault(a => a.Id == id);
         }
+        /// <summary>
+        /// Marks an assignment complete based on a title
+        /// </summary>
+        /// <param name="title">The title of the assignment</param>
+        /// <returns>
+        /// True if the assignment was successfully marked complete
+        /// False if the assignment was not successfully marked complete (no matching title)
+        /// </returns>
         public bool MarkAssignmentComplete(string title)        
         {
             var assignment = FindAssignmentByTitle(title);
@@ -78,6 +116,14 @@ namespace AssignmentManagement.Core.Services
             assignment.MarkComplete();
             return true;
         }
+        /// <summary>
+        /// Deletes an assignment from _assignments based on a title
+        /// </summary>
+        /// <param name="title">The title of the assignment</param>
+        /// <returns>
+        /// True if the assignment was successfully deleted
+        /// False if the assignment was not successfully deleted (no mathcing title)
+        /// </returns>
         public bool DeleteAssignment(string title)
         {
             _logger.Log("Finding assignment for deletion...");
@@ -92,6 +138,21 @@ namespace AssignmentManagement.Core.Services
             _logger.Log("Assignment deleted");
             return true;
         }
+        /// <summary>
+        /// Updates an assignment
+        /// Uses ValidateRequest to check if the DTO contains a field with data that can
+        /// overwrite a matching field in the assignment being updated
+        /// </summary>
+        /// <param name="request">
+        /// A DTO containing the title of the assignment being updated and fields
+        /// matching that of the assignment class. If any fields in the DTO
+        /// are not null, their data will overwrite the data in matching fields
+        /// in the target assignment
+        /// </param>
+        /// <returns>
+        /// True if an assignment with a title matching the "OldTitle" field in the request was found
+        /// False if an assignment with a title matching the "OldTitle" field in the request was not found
+        /// </returns>
         public bool UpdateAssignment(UpdateAssignmentRequest request)
         {
             _logger.Log("Finding assignment to update...");
@@ -124,7 +185,16 @@ namespace AssignmentManagement.Core.Services
 
             return true;
         }
-
+        /// <summary>
+        /// Checks string fields in an assignment being updated against string fields in
+        /// a DTO.
+        /// </summary>
+        /// <param name="request">A field of the DTO matching the assignment being updated</param>
+        /// <param name="assignmentDefault">The filed of the assignment being updated</param>
+        /// <returns>
+        /// A string containing the data within the field of the assignment if request is null
+        /// A string containing the data within the field of the request if request is not null
+        /// </returns>
         public string ValidateRequest(string request, string assignmentDefault)
         {
             string newValue = request ?? assignmentDefault;
@@ -134,13 +204,24 @@ namespace AssignmentManagement.Core.Services
 
             return newValue;
         }
-
+        /// <summary>
+        /// Calls the formatter to format a priority to a string
+        /// </summary>
+        /// <param name="priority">A priority</param>
+        /// <returns>A string representing a priority</returns>
         public string FormatPriorityToString(Priority priority) {
 
             return _formatter.FormatPriorityToString(priority);
         
         }
-
+        /// <summary>
+        /// Calls the formatter to format a string into a priority
+        /// </summary>
+        /// <param name="priority">The string</param>
+        /// <returns>
+        /// A priority representing a the string
+        /// Null if the string was not able to be converted
+        /// </returns>
         public Priority? FormatStringToPriority(string priority) { 
         
             return _formatter.FormatStringToPriority(priority);

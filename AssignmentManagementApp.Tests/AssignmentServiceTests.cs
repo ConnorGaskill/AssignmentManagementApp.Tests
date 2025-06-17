@@ -66,17 +66,14 @@
         }
         [Fact]
         public void Logger_ShouldBeCalledWhenAddingAssignment()
-        {
-            
+        {            
             var formatter = new Mock<IAssignmentFormatter>();
             var logger = new Mock<IAppLogger>();
             var service = new AssignmentService(logger.Object, formatter.Object);
             var assignment = new Assignment("test", "more test");
-
             
             service.AddAssignment(assignment);
 
-            
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Adding assignment"))), Times.Once);
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Assignment added"))), Times.Once);
         }
@@ -84,7 +81,6 @@
         [Fact]
         public void Logger_ShouldBeCalledWhenDeletingAssignment()
         {
-
             var formatter = new Mock<IAssignmentFormatter>();
             var logger = new Mock<IAppLogger>();
             var service = new AssignmentService(logger.Object, formatter.Object);
@@ -93,10 +89,8 @@
             service.AddAssignment(assignment);
             service.DeleteAssignment(assignment.Title);
 
-
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Finding assignment for deletion..."))), Times.Once);
             logger.Verify(l => l.Log(It.Is<string>(s => s.Contains("Assignment deleted"))), Times.Once);
-
         }
         [Fact]
         public void Logger_ShouldBeCalledWhenUpdatingAssignment()
